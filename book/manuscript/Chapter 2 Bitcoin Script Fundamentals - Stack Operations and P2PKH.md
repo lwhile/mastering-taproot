@@ -522,7 +522,7 @@ This chapter established the foundational concepts that make Taproot possible:
 
 **P2PKH Implementation**: The fundamental script type demonstrates signature verification and public key validation through a seven-step process: signature and public key provision, duplication, hashing, comparison, and signature verification.
 
-**Practical Development**: Using tools like `bitcoinutils`, developers can construct, sign, and broadcast P2PKH transactions while understanding the underlying cryptographic operations and stack execution.
+**Practical Development**: Using tools like [`bitcoinutils`](https://github.com/karask/python-bitcoin-utils), developers can construct, sign, and broadcast P2PKH transactions while understanding the underlying cryptographic operations and stack execution.
 
 Understanding these concepts is crucial because Taproot builds upon them, using the same stack-based execution model while introducing new cryptographic primitives and script structures. The journey from simple P2PKH scripts to Taproot's sophisticated spending conditions illustrates Bitcoin's evolution from basic digital cash to a platform for complex financial applications—all while preserving the security and simplicity that make Bitcoin unique.
 
