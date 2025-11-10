@@ -28,9 +28,9 @@ Bitcoin originally used ECDSA (Elliptic Curve Digital Signature Algorithm) for d
 - **No Linearity**: Mathematical operations don't preserve relationships
 
 **Schnorr's Revolutionary Advantages:**
-- **Non-malleable**: Signatures cannot be modified once created
+- **Non-malleable**: Under BIP340, deterministic nonces, x-only public keys, and strict encoding rules remove the third-party malleability vectors seen with ECDSA
 - **Key Aggregation**: Multiple public keys can be combined into one
-- **Signature Aggregation**: Multiple signatures can be merged into one
+- **Single-Signature Output**: Produces a single aggregated signature
 - **Compact Size**: Fixed 64-byte signatures
 - **Efficient Verification**: Faster and simpler verification process
 - **Mathematical Linearity**: Enables advanced cryptographic constructions
@@ -48,8 +48,10 @@ Then A + B creates a valid signature for (Alice + Bob)'s combined key
 This simple mathematical relationship enables three revolutionary capabilities:
 
 1. **Key Aggregation**: Multiple people can combine their public keys into one
-2. **Signature Aggregation**: Multiple signatures can be mathematically merged
+2. **Single-signature Output**: Multiple parties can cooperatively produce one single unified signature
 3. **Key Tweaking**: Keys can be deterministically modified with commitments
+
+note:“Single-signature output” refers to producing one BIP340 signature on-chain via MuSig2 (a wallet-level protocol), not a consensus-level signature aggregation across inputs
 
 ### Visual Comparison: ECDSA vs Schnorr
 
@@ -104,13 +106,26 @@ Reality:
 
 ## Key Tweaking: The Bridge to Taproot
 
-Taproot leverages Schnorr's linearity through **key tweaking** (also known as **Tweakable Commitment** in BIP340/341/342 philosophy), which follows the BIP341 formula:
+Taproot leverages Schnorr's linearity through **key tweaking** (also known as **tweakable commitment** in BIP340/341/342 philosophy).
 
+Conceptually: 
 ```
 t = H("TapTweak" || internal_pubkey || merkle_root)
-P' = P + t × G
+```
+Formally (BIP341):
+
+```
+t  = int(HashTapTweak(xonly_internal_key || merkle_root_or_empty)) mod n
+
+P' = P + t * G
 d' = d + t
 ```
+**Even-Y requirement (BIP340):**  
+Taproot uses x-only public keys — but the actual point on secp256k1 still has two possible y values (even / odd).  
+The BIP340 rule is: the final tweaked output key **must correspond to an even-y point**.  
+If the point ends up odd-y, implementations flip the private key to `d' = n − d'` so that `P' = d'*G` lands on the even branch.
+
+(Why this matters later: in script-path spending this parity is encoded into the control block's lowest bit. If you don’t track this now, script-path won’t verify later.)
 
 ### Visual Representation of Key Tweaking Structure
 
@@ -156,7 +171,7 @@ Where:
 - `d'` = **Tweaked Private Key** (for key path spending)
 
 This mathematical relationship ensures that:
-1. **Anyone can compute P'** from P and the commitment
+1. **Anyone can compute P'** from P and the commitment（Given the internal key P and (optional) Merkle root M）
 2. **Only the key holder can compute d'** from d and the tweak
 3. **The relationship d' × G = P'** is maintained (signature verification works)
 
@@ -355,7 +370,7 @@ tx, signature = create_simple_taproot_transaction()
 
 1. **Taproot Address Generation**: `get_taproot_address()` automatically applies the tweaking process
 2. **Schnorr Signing**: `sign_taproot_input()` produces exactly 64-byte signatures
-3. **Minimal Witness**: Only the signature is needed in the witness stack
+3. **Minimal Witness**: Only the signature is needed in the witness stack（In practice the witness item is 64 or 65 bytes (64-byte signature plus an optional 1-byte sighash flag); with SIGHASH_DEFAULT the flag may be omitted.）
 4. **Identical Appearance**: This transaction looks identical to any other Taproot transaction
 
 ## Real Transaction Analysis
@@ -549,7 +564,7 @@ Non-Cooperative Spending (Script Path):
 
 Taproot represents a paradigm shift in Bitcoin transactions through two key mathematical innovations:
 
-**Schnorr Signatures**: The linearity property enables key aggregation, signature aggregation, and most importantly, key tweaking. This creates fixed 64-byte signatures that can represent any level of complexity while looking identical.
+**Schnorr Signatures**: The linearity property enables key aggregation,single-signature output, and most importantly, key tweaking. This creates fixed 64-byte signatures that can represent any level of complexity while looking identical.
 
 **Key Tweaking (Tweakable Commitment)**: The mathematical relationship `P' = P + t×G` allows keys to be deterministically modified with script commitments, creating dual spending paths while maintaining cryptographic security.
 

@@ -233,6 +233,7 @@ SegWit Transaction Format
 
 Total: 193 bytes (added witness section)
 ```
+Note: marker/flag (00 01) appear only in the serialized form to indicate SegWit and do not participate in the txid (they do participate in the wtxid).
 
 ### Raw Transaction Parsed Components
 
@@ -359,6 +360,7 @@ This pattern recognition framework is what enables Taproot's OP_1 programs—the
 └─────────────────────────────────────────┘
 ```
 **(Hash160 = RIPEMD160(SHA256(public_key)))**
+In BIP143, the P2WPKH scriptCode used in the signature message is exactly the P2PKH template: OP_DUP OP_HASH160 <20-byte-hash> OP_EQUALVERIFY OP_CHECKSIG.
 
 #### 3c. PUSH Expected Hash: From witness program
 ```
@@ -392,6 +394,9 @@ The P2WPKH spending is authorized with:
 - ✅ Signature verification passed
 - ✅ Transaction malleability resistant (TXID excludes witness)
 
+SegWit introduces two identifiers: the txid (hash of the base transaction, excludes witness) and the wtxid (includes witness). Miners commit the block’s witness data via the witness commitment (Merkle root of wtxids) in the coinbase.
+
+
 ## 4.5 SegWit to Taproot Evolution
 
 SegWit establishes the architectural foundation that enables Taproot through three key innovations:
@@ -410,14 +415,14 @@ Stable transaction IDs enable:
 
 ### Economic Incentives
 
-SegWit introduces a revolutionary fee calculation that incentivizes efficient script design:
+SegWit introduces a revolutionary fee calculation that incentivizes efficient script design，Fees are based on weight
 
 ```
 Transaction Weight = (Base Size × 4) + Witness Size
 Virtual Size = Weight ÷ 4
 ```
-
-The 75% witness discount creates powerful economic incentives because witness data (signatures, scripts) only contributes 1 weight unit per byte, while base transaction data contributes 4 weight units per byte.
+Intuition: witness bytes count 1 WU/byte, base bytes 4 WU/byte.
+The 75% witness discount creates powerful economic incentives because witness data (signatures, scripts) only contributes 1 weight unit per byte, while base transaction data contributes 4 weight units per byte. Multisig/scripts benefit more when moved to witness (P2WSH), but savings are structure-dependent, not a fixed 25%/75%.
 
 **Space Efficiency Through Separation:**
 
