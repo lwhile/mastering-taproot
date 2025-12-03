@@ -246,11 +246,11 @@ def script_path_spending():
     taproot_address = alice_public.get_taproot_address([[tr_script]])
 
     # Step 3: Build spending transaction structure
-    commit_txid = "68f7c8f0ab6b3c6f7eb037e36051ea3893b668c26ea6e52094ba01a7722e604f"
+    previous_txid = "9e193d8c5b4ff4ad7cb13d196c2ecc210d9b0ec144bb919ac4314c1240629886"
     input_amount = 0.00005000  # 5000 satoshis
     output_amount = 0.00004000  # 4000 satoshis (1000 sats fee)
 
-    txin = TxInput(commit_txid, 0)
+    txin = TxInput(previous_txid, 0)
     txout = TxOutput(
         to_satoshis(output_amount),
         alice_public.get_taproot_address().to_script_pub_key()
