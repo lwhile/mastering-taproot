@@ -25,12 +25,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install jupyter-book
+          pip install jupyter-book sphinx
           pip install -r requirements.txt 2>/dev/null || echo "No requirements.txt found"
 
       - name: Build book
         run: |
           jupyter-book build . --all
+        continue-on-error: false
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
