@@ -15,7 +15,7 @@ html:
 
 # 执行设置
 execute:
-  execute_notebooks: "auto"  # auto, force, cache, off
+  execute_notebooks: "off"  # off: 不执行，使用已保存的输出；auto: 自动执行
   timeout: 60
   allow_errors: false
 

@@ -30,11 +30,16 @@ jobs:
         run: |
           pip install jupyter-book sphinx
           pip install -r requirements.txt 2>/dev/null || echo "No requirements.txt found"
+          # Install notebook execution dependencies if needed
+          pip install ipykernel 2>/dev/null || true
 
       - name: Build book
         run: |
           jupyter-book build . --all
         continue-on-error: false
+        env:
+          # Disable notebook execution to avoid dependency issues
+          JUPYTER_EXECUTE_NOTEBOOKS: "off"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
