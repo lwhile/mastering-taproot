@@ -8,3 +8,7 @@
 - [Chapter 6 — Real Taproot Contracts: Single-Leaf HashLock & Dual-Path Spending](Chapter%206%20Building%20Real%20Taproot%20Contracts%20-%20Single-Leaf%20Hash%20Lock%20and%20Dual-Path%20Spending.md)
 - [Chapter 7 — Taproot Dual-Leaf Script Tree: Complete HashLock + Bob Script](Chapter%207%20Taproot%20Dual-Leaf%20Script%20Tree%20-%20Complete%20Implementation%20of%20Hash%20Lock%20and%20Bob%20Script.md)
 - [Chapter 8 — Four-Leaf Taproot Script Tree: Enterprise-Grade Multi-Path Spending](Chapter%208%20Four-Leaf%20Taproot%20Script%20Tree%20-%20Complete%20Implementation%20of%20Enterprise-Grade%20Multi-Path%20Spending.md)
+- [Chapter 9 — Ordinals and BRC-20: Taproot Witness as Data Layer](Chapter%209%20Ordinals%20and%20BRC-20%20-%20Taproot%20Witness%20as%20Data%20Layer.md)
+- [Chapter 10 — RGB: Client-Side Validation & Taproot Commitments](Chapter%2010%20%E2%80%94%20RGB%3A%20Client-Side%20Validation%20%26%20Taproot%20Commitments.md)
+- [Chapter 11 — Lightning Network Channels: From P2WSH Multisig to Taproot Privacy Channels](Chapter%2011%20Lightning%20Network%20Channels%20-%20From%20P2WSH%20Multisig%20to%20Taproot%20Privacy%20Channels.md)
+- [Chapter 12 — Silent Payments: Elliptic Curve Arithmetic and Address Privacy](Chapter%2012%20Silent%20Payments%20-%20Elliptic%20Curve%20Arithmetic%20and%20Address%20Privacy.md)
