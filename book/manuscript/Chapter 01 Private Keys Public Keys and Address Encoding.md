@@ -19,7 +19,7 @@ Each step in this hierarchy serves a specific purpose:
 
 ## Private Keys: The Foundation of Ownership
 
-A Bitcoin private key is fundamentally a 256-bit random number—a massive integer that serves as the secret foundation of cryptocurrency ownership. To put this in perspective, the total number of possible private keys (2^256) exceeds the estimated number of atoms in the observable universe.
+A Bitcoin private key is fundamentally a 256-bit random number—a massive integer that serves as the secret foundation of cryptocurrency ownership. To put this in perspective, the total number of possible private keys (2^256) is comparable to the estimated number of atoms in the observable universe.
 
 ### Generating Private Keys
 
@@ -61,7 +61,7 @@ The Wallet Import Format (WIF) addresses the usability challenges of raw hexadec
 The WIF encoding process follows these steps:
 
 1. **Add version prefix**: `0x80` for mainnet, `0xEF` for testnet
-2. **(Optional) Add compression flag**: If the corresponding public key will be compressed, append 0x01 to the payload,This step changes the final Base58 prefix of the WIF
+2. **(Optional) Add compression flag**: If the corresponding public key will be compressed, append `0x01` to the payload. This step changes the final Base58 prefix of the WIF
 2. **Calculate checksum**: Apply SHA256(SHA256(data)) and take first 4 bytes
 3. **Apply Base58 encoding**: Convert to human-readable format
 
