@@ -564,7 +564,7 @@ Non-Cooperative Spending (Script Path):
 
 Taproot represents a paradigm shift in Bitcoin transactions through two key mathematical innovations:
 
-**Schnorr Signatures**: The linearity property enables key aggregation,single-signature output, and most importantly, key tweaking. This creates fixed 64-byte signatures that can represent any level of complexity while looking identical.
+**Schnorr Signatures**: The linearity property enables key aggregation, single-signature output, and most importantly, key tweaking. This creates fixed 64-byte signatures that can represent any level of complexity while looking identical.
 
 **Key Tweaking (Tweakable Commitment)**: The mathematical relationship `P' = P + t×G` allows keys to be deterministically modified with script commitments, creating dual spending paths while maintaining cryptographic security.
 
