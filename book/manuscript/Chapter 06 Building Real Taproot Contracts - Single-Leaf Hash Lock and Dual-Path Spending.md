@@ -139,7 +139,7 @@ def create_taproot_commitment():
 2. **TapLeaf Hash Calculation**:
     ```python
     # Merkle root for single leaf script
-    script_data = bytes.fromhex("a820936a...8851")
+    script_data = bytes.fromhex("a820936a185caaa266bb9cbe981e9e05cb78cd732b0b3280eb944412bb6f8f8f07af8851")
     leaf_version = 0xc0
     tapleaf_hash = tagged_hash("TapLeaf", leaf_version + len(script_data) + script_data)
     merkle_root = tapleaf_hash  # Single leaf case
