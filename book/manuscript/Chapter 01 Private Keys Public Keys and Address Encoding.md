@@ -6,8 +6,8 @@ Understanding Bitcoin's cryptographic foundation is essential before diving into
 
 Bitcoin's security model relies on a one-way mathematical relationship between private keys, public keys, and addresses:
 
-```
-Private Key (256-bit) → Public Key (ECDSA point) → Address (encoded hash)
+```text
+Private Key (256-bit) -> Public Key (ECDSA point) -> Address (encoded hash)
 
 ```
 
@@ -134,8 +134,8 @@ print(f"Uncompressed: {public_key_uncompressed}")
 **Example output:**
 
 ```
-Compressed:   0250be5fc44ec580c387bf45df275aaa8b27e2d7716af31f10eeed357d126bb4d3
-Uncompressed: 0450be5fc44ec580c387bf45df275aaa8b27e2d7716af31f10eeed357d126bb4d36dbc816fe21ba41dfa6e6a92d0ccd62240b8a9eaa87d508b2ee330ef03162a90
+Compressed:   0250be5f...d126bb4d3
+Uncompressed: 0450be5f...03162a90
 
 ```
 
@@ -258,7 +258,7 @@ Taproot addresses use Bech32m, an improved version of Bech32:
 
 While address encoding involves many subtle rules—like version bytes, checksums, and different encodings (Base58Check, Bech32, Bech32m)—it’s more important to understand the general idea:
 
-👉 addresses are for humans. They’re just a user-friendly representation of locking scripts (scriptPubKey), not a required component of the protocol itself.
+Addresses are for humans. They’re just a user-friendly representation of locking scripts (scriptPubKey), not a required component of the protocol itself.
 
 Once you recognize the prefix (1, 3, bc1q, bc1p), you already know what kind of script is behind it. From the node’s perspective, Bitcoin never stores addresses—only scripts.
 

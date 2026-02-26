@@ -173,7 +173,7 @@ Where:
 This mathematical relationship ensures that:
 1. **Anyone can compute P'** from P and the commitment（Given the internal key P and (optional) Merkle root M）
 2. **Only the key holder can compute d'** from d and the tweak
-3. **The relationship d' × G = P'** is maintained (signature verification works)
+3. **The relationship d' * G = P'** is maintained (signature verification works)
 
 ### Practical Key Tweaking Implementation
 
@@ -232,7 +232,7 @@ def demonstrate_key_tweaking():
     
     # Step 5: Verify the mathematical relationship
     print(f"\n=== STEP 5: Mathematical Verification ===")
-    print(f"d' × G = P'? {tweaked_private_key.get_public_key().to_hex() == tweaked_public_key.to_hex()}")
+    print(f"d' * G = P'? {tweaked_private_key.get_public_key().to_hex() == tweaked_public_key.to_hex()}")
     print(f"Anyone can compute P' from P and commitment: ✓")
     print(f"Only key holder can compute d' from d and tweak: ✓")
     
@@ -277,7 +277,7 @@ Complex Contract:
 ├── Tweaked Key: Internal key + H(key || merkle_root)
 └── Spending: 64-byte Schnorr signature (if cooperative)
 
-🔍 External View: IDENTICAL 64-byte signatures!
+[Note] External View: IDENTICAL 64-byte signatures!
 ```
 
 ## Simple Taproot Transaction: Putting It All Together
@@ -299,7 +299,9 @@ def create_simple_taproot_transaction():
     from_address = from_pub.get_taproot_address()
     
     # Receiver's address
-    to_address = P2trAddress('tb1p53ncq9ytax924ps66z6al3wfhy6a29w8h6xfu27xem06t98zkmvsakd43h')
+    to_address = P2trAddress(
+        'tb1p53ncq9ytax924ps66z6al3wfhy6a29w8h6xfu27xem06t98zkmvsakd43h'
+    )
     
     print("=== TAPROOT TRANSACTION CREATION ===")
     print(f"From Address: {from_address.to_string()}")
@@ -375,27 +377,27 @@ tx, signature = create_simple_taproot_transaction()
 
 ## Real Transaction Analysis
 
-Let's examine a real Taproot transaction: `a3b4d0382efd189619d4f5bd598b6421e709649b87532d53aecdc76457a42cb6`
+Let's examine a real Taproot transaction: [`a3b4d038...7a42cb6`](https://mempool.space/testnet/tx/a3b4d0382efd189619d4f5bd598b6421e709649b87532d53aecdc76457a42cb6)
 
 **Transaction Structure:**
 ```
 Input:
-├── Previous Output: tb1pjyjeruun8pc5ln3wtv2d6lsxqn55frpyc83kn473h7848d0kj73sxy3ku8
-├── ScriptPubKey: OP_1 912591f39338714fce2e5b14dd7e0604e9448c24c1e369d7d1bf8f53b5f697a3
-└── Witness: [7d25fbc9b98ee0eb09ed38c2afc19127465b33d6120f4db8d4fd46e532e30450d7d2a1f1dd7f03e8488c434d10f4051741921d695a44fb774897020f41da99f3]
+├── Previous Output: tb1pjyje...y3ku8
+├── ScriptPubKey: OP_1 912591f3...5f697a3
+└── Witness: [7d25fbc9...41da99f3]
 
 Output:
-├── Destination: tb1p53ncq9ytax924ps66z6al3wfhy6a29w8h6xfu27xem06t98zkmvsakd43h
-└── ScriptPubKey: OP_1 a3ff4d6e5ab7b6a8f5d5e8d6c7aef543782ba38c9e614d7e1a2b3c4f567890ab
+├── Destination: tb1p53nc...akd43h
+└── ScriptPubKey: OP_1 a3ff4d6e...7890ab
 ```
 
 **Witness Data Analysis:**
 ```
-Schnorr Signature: 7d25fbc9b98ee0eb09ed38c2afc19127465b33d6120f4db8d4fd46e532e30450d7d2a1f1dd7f03e8488c434d10f4051741921d695a44fb774897020f41da99f3
+Schnorr Signature: 7d25fbc9...41da99f3
 
 Structure:
-├── r-value: 7d25fbc9b98ee0eb09ed38c2afc19127465b33d6120f4db8d4fd46e532e30450d
-├── s-value: 7d2a1f1dd7f03e8488c434d10f4051741921d695a44fb774897020f41da99f3
+├── r-value: 7d25fbc9...2e30450d
+├── s-value: 7d2a1f1d...41da99f3
 └── Total: 64 bytes (32 + 32)
 ```
 
@@ -457,7 +459,7 @@ The interpreter performs Schnorr signature verification:
 **Verification Algorithm:**
 1. **Parse signature**: Extract r and s values (32 bytes each)
 2. **Compute challenge**: `e = H(r || P || sighash)`
-3. **Compute verification point**: `R = s×G - e×P`
+3. **Compute verification point**: `R = s*G - e*P`
 4. **Verify**: `r == x-coordinate of R`
 
 **Verification Result:**
@@ -566,7 +568,7 @@ Taproot represents a paradigm shift in Bitcoin transactions through two key math
 
 **Schnorr Signatures**: The linearity property enables key aggregation,single-signature output, and most importantly, key tweaking. This creates fixed 64-byte signatures that can represent any level of complexity while looking identical.
 
-**Key Tweaking (Tweakable Commitment)**: The mathematical relationship `P' = P + t×G` allows keys to be deterministically modified with script commitments, creating dual spending paths while maintaining cryptographic security.
+**Key Tweaking (Tweakable Commitment)**: The mathematical relationship `P' = P + t*G` allows keys to be deterministically modified with script commitments, creating dual spending paths while maintaining cryptographic security.
 
 **The Result**: Complex smart contracts become **computationally and observationally identical** to simple payments, providing unprecedented privacy without sacrificing functionality.
 
